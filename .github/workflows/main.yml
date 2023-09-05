@@ -15,4 +15,4 @@ jobs:
       with:
         server:  ftp.yandrydev.com
         username: yandrydev@yandrydev.com
-        password: ${{ secrets.FTP_PASSWORD }}
+        password: ${{ secrets.FTP_SERVICESPASSWORD }}
