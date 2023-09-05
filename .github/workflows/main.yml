@@ -14,5 +14,5 @@ jobs:
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
         server:  ftp.yandrydev.com
-        username: yandrydev@yandrydev.com
+        username: yandrydev.com@servicios.yandrydev.com
         password: ${{ secrets.FTP_SERVICESPASSWORD }}
