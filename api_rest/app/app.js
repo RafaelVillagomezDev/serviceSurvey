@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+//enpoint : http://localhost:3000/api/v1/workouts/patata//
 
 var workoutRouterV1 = require('./routes/v1/workoutRoutes');
 

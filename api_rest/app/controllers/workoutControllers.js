@@ -1,26 +1,33 @@
 var express = require('express');
 var router = express.Router();
-
+const workoutService=require("../services/workoutServices")
 
 // In src/controllers/workoutController.js
 const getAllWorkouts = (req, res) => {
-  res.send(`soyy ${req.params.workoutId}`);
+   const allWorkouts=workoutService.getAllWorkoutouts()
+   console.log(allWorkouts)
+   debugger
+  res.send({status:"ok",data:allWorkouts});
 };
 
 const getOneWorkout = (req, res) => {
-    res.send(`soyy ${req.params.workoutId}`);
+    const OneWorkout=workoutService.getOneWorkout(req.params.workoutId)
+    res.send({status:"ok",data:OneWorkout});
 };
 
 const createNewWorkout = (req, res) => {
-    res.send(`soyy ${req.params.workoutId}`);
+    const NewWorkout=workoutService.createNewWorkout(req.params.workoutId)
+    res.send({status:"ok",data:NewWorkout});
 };
 
 const updateOneWorkout = (req, res) => {
-    res.send(`soyy ${req.params.workoutId}`);
+    const updateWorkout=workoutService.updateOneWorkout(req.params.workoutId)
+    res.send({status:"ok",data:updateWorkout});
 };
 
 const deleteOneWorkout = (req, res) => {
-    res.send(`soyy ${req.params.workoutId}`);
+    const deleteWorkout=workoutService.deleteOneWorkout(req.params.workoutId)
+    res.send({status:"ok",data:deleteWorkout});
 };
 
 module.exports = {

@@ -5,7 +5,7 @@ const workoutController=require("../../controllers/workoutControllers")
 // In src/controllers/workoutController.js
 
 /* GET home page. */
-router.get('/', workoutController.getAllWorkouts);
+router.get('/',  workoutController.getAllWorkouts);
 
 router.get('/:workoutId', workoutController.getOneWorkout);
 
