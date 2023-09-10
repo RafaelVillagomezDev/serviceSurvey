@@ -5,9 +5,8 @@ const workoutService=require("../services/workoutServices")
 // In src/controllers/workoutController.js
 const getAllWorkouts = (req, res) => {
    const allWorkouts=workoutService.getAllWorkoutouts()
-   console.log(allWorkouts)
-   debugger
-  res.send({status:"ok",data:allWorkouts});
+   
+  res.send({status:"ok",data:allWorkouts,animal:"perro"});
 };
 
 const getOneWorkout = (req, res) => {

@@ -2,10 +2,11 @@ var express = require('express');
 var router = express.Router();
 const workoutController=require("../../controllers/workoutControllers")
 
+const middlewareHeader=require("../../middlewares/customHeader")
 // In src/controllers/workoutController.js
 
 /* GET home page. */
-router.get('/',  workoutController.getAllWorkouts);
+router.get('/',middlewareHeader,workoutController.getAllWorkouts);
 
 router.get('/:workoutId', workoutController.getOneWorkout);
 
