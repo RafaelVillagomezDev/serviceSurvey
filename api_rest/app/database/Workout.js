@@ -7,6 +7,13 @@ const getAllWorkouts=()=>{
 
 }
 
+const getData=()=>{
+    let mesa={"mesa":"pequeña"}
+    console.log(DB.workouts)
+    return(DB.workouts[0].push(mesa))
+}
+
 module.exports={
-    getAllWorkouts
+    getAllWorkouts,
+    getData
 }

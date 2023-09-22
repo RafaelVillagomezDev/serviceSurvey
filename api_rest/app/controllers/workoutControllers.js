@@ -1,16 +1,23 @@
 var express = require('express');
 var router = express.Router();
-const workoutService=require("../services/workoutServices")
+const workoutService=require("../services/workoutServices");
+const { handleHttpError } = require('../utils/handleError');
 
 // In src/controllers/workoutController.js
 const getAllWorkouts = (req, res) => {
-   const allWorkouts=workoutService.getAllWorkoutouts()
+   try{
+    const allWorkouts=workoutService.getAllWorkoutouts()
+    console.log(req.name)
+    res.send({status:"ok",data:allWorkouts});
+   }catch(res){
+      handleHttpError(res,"Error en get AllWorkouts",400)
+   }
    
-  res.send({status:"ok",data:allWorkouts,animal:"perro"});
 };
 
 const getOneWorkout = (req, res) => {
-    const OneWorkout=workoutService.getOneWorkout(req.params.workoutId)
+    const {body}=req
+    const OneWorkout=workoutService.getOneWorkout(body)
     res.send({status:"ok",data:OneWorkout});
 };
 

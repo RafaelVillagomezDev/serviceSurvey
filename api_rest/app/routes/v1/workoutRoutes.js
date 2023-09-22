@@ -8,7 +8,7 @@ const middlewareHeader=require("../../middlewares/customHeader")
 /* GET home page. */
 router.get('/',middlewareHeader,workoutController.getAllWorkouts);
 
-router.get('/:workoutId', workoutController.getOneWorkout);
+router.post('/data', workoutController.getOneWorkout);
 
 router.post('/:workoutId', workoutController.createNewWorkout);
 
