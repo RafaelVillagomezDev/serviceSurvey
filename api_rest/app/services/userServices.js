@@ -1,40 +1,13 @@
 const User = require("../database/User");
-const Flatted = require("flatted");
-const {parse, stringify, toJSON, fromJSON} = require('flatted');
-const mysql= require('mysql');
- 
-    var connection =  mysql.createConnection({
-        host: process.env.DBHOST,
-        user: process.env.DBUSER,
-        password: process.env.DBPASSWORD,
-        database: process.env.DATABASE
-    });
-   
-    connection.connect(); 
+const connection =require("../connection/bd")
 
-const getAllUsers =() => {
+const getAllUsers = () => {
 
-
-
-  const row = connection.query(
-    "INSERT INTO PRODUCT (producto) VALUES ('LUZ');",
-    function (error, results, fields) {
-      if (error) throw error;
-
-      console.log('The solution is: ', results[0]); 
-      
-    }
+   connection.promise().query("SELECT * FROM PRODUCT").then(([rows,fields])=>{
+     return rows
     
-  );
-  connection.end()
-  
-
-  return row;
-};
-const getOneUser = () => {
-  const data = 12;
-
-  return data;
+   }).catch(console.log)
+  .then( () => connection.end());
 };
 const createNewUser = () => {
   return;
@@ -42,12 +15,11 @@ const createNewUser = () => {
 const updateOneUser = () => {
   return;
 };
-const deleteOneUser = () => {
+const deleteOneUser = () => { 
   return;
 };
 
 module.exports = {
-  getOneUser,
   createNewUser,
   updateOneUser,
   deleteOneUser,
