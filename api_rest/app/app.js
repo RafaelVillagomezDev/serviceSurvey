@@ -1,3 +1,4 @@
+const dotenv=require("dotenv");
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -6,7 +7,9 @@ var logger = require('morgan');
 
 //enpoint : http://localhost:3000/api/v1/workouts/patata//
 
-var workoutRouterV1 = require('./routes/v1/workoutRoutes');
+dotenv.config()
+
+var userRouterV1 = require('./routes/v1/UserRoutes');
 
 var app = express();
 
@@ -20,8 +23,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api/v1/workouts', workoutRouterV1);
-
+app.use('/api/v1/user', userRouterV1);
+const port = 3445;
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
+});
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
