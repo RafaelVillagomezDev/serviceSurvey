@@ -1,12 +1,13 @@
 const User = require("../database/User");
 
+const userService=require("../services/userServices");
 
 
 
 
 const getAllUsers = () => {
 
-  const query='SELECT * AS solution from product'
+  const query='SELECT * from product;'
    return query;
  
 };
