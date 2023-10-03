@@ -7,8 +7,7 @@ const Flatted = require('flatted');
 // In src/controllers/workoutController.js
 const getAllUsers = (req, res) => {
     const query= userService.getAllUsers()
-    console.log(query)
-   return res.status(200).json(query);
+   return res.send({status:query});
  
    
 };
