@@ -4,7 +4,8 @@ var connection = {
   host     : process.env.DBHOST,
   user     : process.env.DBUSER,
   password : process.env.DBPASSSWORD,
-  database : process.env.DBDATABASE
+  database : process.env.DBDATABASE,
+  port:process.env.DBPORT
 };
 
 const pool = mysql.createPool(connection);

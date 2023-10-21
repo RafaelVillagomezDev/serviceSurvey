@@ -66,14 +66,25 @@ const createSurvey=async (req, res,next) => {
 
     const [existSubproduct]= await promisePool.query(querySubproduct, [id_subproducto,producto]);
     
-    if (existSubproduct.length == 0) {
+
+    if (existSubproduct.length == 0 && id_subproducto!="" ) {
       handleHttpError(res, "ERROR AL INSERTAR SUBPRODUCTO REVISAR BD", 401);
       return;
     }
 
 
     const queryCreate = surveyService.createSurvey();
-    const result = await promisePool.query(queryCreate,[id_encuesta,dni,producto,mantenimiento,tipo_mantenimiento,estado,id_subproducto]);
+     
+    const queryCreate2 = surveyService.createSurvey2();
+    let result=""
+
+    if(id_subproducto==""){
+    result = await promisePool.query(queryCreate2,[id_encuesta,dni,producto,mantenimiento,tipo_mantenimiento,estado]);
+    
+    }else{
+      result = await promisePool.query(queryCreate,[id_encuesta,dni,producto,mantenimiento,tipo_mantenimiento,estado,id_subproducto]);
+    }
+   
     
 
     const uuid_user_survey=await uuidv4()

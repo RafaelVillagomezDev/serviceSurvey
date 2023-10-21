@@ -9,6 +9,11 @@ const createSurvey = () => {
   return query;
 };
 
+const createSurvey2 = () => {
+  const query = "INSERT INTO ENCUESTA (Id_encuesta,Dni,Producto,Mantenimiento,Tipo_mantenimiento,Estado) VALUES (?,UPPER(?),UPPER(?),UPPER(?),UPPER(?),UPPER(?));";
+  return query;
+};
+
 const deleteSurvey=()=>{
   const query = 'DELETE FROM encuesta WHERE  id_encuesta = ?;';
   return query;
@@ -17,5 +22,6 @@ const deleteSurvey=()=>{
 module.exports = {
   getSurvey,
   createSurvey,
+  createSurvey2,
   deleteSurvey
 };
