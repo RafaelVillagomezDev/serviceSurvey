@@ -146,6 +146,7 @@ const deleteSurvey=async (req, res,next) => {
     
     res.send({
        status:200,
+       id:id_encuesta,
        data:"Encuesta borrada satifactoriamente"
     });
     
