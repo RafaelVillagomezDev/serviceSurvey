@@ -100,7 +100,10 @@ const createSurvey=async (req, res,next) => {
     if(result[0].affectedRows>0){
       res.send({
         status:200,
-        data:"encuesta creada satifactoriamente"
+        data:{
+          msg:"Encuesta borrada satisfactoriamente",
+          id_encuesta:id_encuesta
+        }
      });
     }
   
