@@ -26,17 +26,17 @@ const registerAuthUser = async (req, res, next) => {
 
     const passwordHash = await encrypt(req.password);
     const dataBody = { ...req, password: passwordHash };
-    const { email, name_user, surname, password } = dataBody;
+    const { email, name_user, surname, password , dni , nif , birthday,privacy_policy} = dataBody;
     const queryRegister = authService.createUser(dataBody);
 
-    let data = null;
+    let data = null;  
     let rol = "user";
 
     if (validateRol(email)) {
       rol = "admin";
-      data = await promisePool.query(queryRegister, [email,rol,name_user,surname,password,]);
+      data = await promisePool.query(queryRegister, [email,rol,name_user,surname,password,dni,nif,birthday,privacy_policy]);
     } else {
-      data = await promisePool.query(queryRegister, [email,rol,name_user,surname,password,]);
+      data = await promisePool.query(queryRegister, [email,rol,name_user,surname,password,dni,nif,birthday,privacy_policy]);
     }
 
     if (data[0].affectedRows > 0) {
