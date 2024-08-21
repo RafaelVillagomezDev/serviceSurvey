@@ -4,6 +4,7 @@ const authController=require("../../controllers/authController")
 const validateAuth=require("../../validators/auth")
 
 router.post('/register', validateAuth("create"),authController.registerAuthUser);
+router.post('/registerAdmin', validateAuth("createAdmin"),authController.registerAuthUserAdmin);
 router.post('/login', validateAuth("login"),authController.loginAuthUser);
 
 module.exports=router

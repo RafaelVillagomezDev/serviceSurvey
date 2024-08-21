@@ -1,9 +1,15 @@
 
 
 const createUser = () => {
-    const query='INSERT INTO USUARIO (Email, Rol_user, Name_user, Surname_user, PasswD,Dni,Birthday,Privacy_policy) VALUES (?,?,?,?,?,?,?,?,?);'
+    const query = 'INSERT INTO USUARIO (Email,Rol_user,Name_user, Surname_user,PasswD,Birthday,Dni,Privacy_policy) VALUES (?,?,?,?,?,?,?,?);';
     return query;
 };
+
+const createUserAdmin = () => {
+    const query = 'INSERT INTO USUARIO (Email,Rol_user,Name_user, Surname_user,PasswD,Birthday,Nif,Privacy_policy) VALUES (?,?,?,?,?,?,?,?);';
+    return query;
+};
+
 
 
 const existUser=()=>{
@@ -11,4 +17,4 @@ const existUser=()=>{
     return query;
 }
 
-module.exports={createUser,existUser}
+module.exports={createUser,existUser,createUserAdmin}
