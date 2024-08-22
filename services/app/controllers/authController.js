@@ -1,10 +1,7 @@
 const db = require("../connection/bd");
 const { matchedData, validationResult } = require("express-validator");
-const promisePool = db.pool.promise();
 const { handleHttpError } = require("../utils/handleError");
 const { encrypt, compare } = require("../utils/handlePassword");
-const authService = require("../services/authServices");
-const { validateRol } = require("../utils/handleRegex");
 const { tokenSign } = require("../utils/handeJwt");
 const User = require("../models/UserModel");
 const UserAdmin = require("../models/UserAdminModel");
@@ -91,8 +88,6 @@ const registerAuthUserAdmin = async (req, res, next) => {
   }
 };
 
-
-
 const loginAuthUser = async (req, res, next) => {
   try {
     const errors = validationResult(req);
@@ -104,7 +99,7 @@ const loginAuthUser = async (req, res, next) => {
     req = matchedData(req);
 
     const dataBody = { ...req };
-    const {password } = dataBody;
+    const { password } = dataBody;
 
     const user = new User(req);
     const existUser = await user.existUser();
@@ -114,17 +109,15 @@ const loginAuthUser = async (req, res, next) => {
       return;
     }
 
-   
     const hashPassword = existUser[0][0].passwd;
 
-    const verifyCredentials = await compare(password,hashPassword);
+    const verifyCredentials = await compare(password, hashPassword);
 
     if (!verifyCredentials) {
       handleHttpError(res, "la contraseña es incorrecta", 401);
       return;
     }
 
-   
     const dataToken = {
       email: existUser[0].email,
       name_user: existUser[0].name_user,
