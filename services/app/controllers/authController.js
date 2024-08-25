@@ -5,6 +5,7 @@ const { encrypt, compare } = require("../utils/handlePassword");
 const { tokenSign } = require("../utils/handeJwt");
 const User = require("../models/UserModel");
 const UserAdmin = require("../models/UserAdminModel");
+const { v4: uuidv4 } = require("uuid");
 
 const registerAuthUser = async (req, res, next) => {
   try {
@@ -17,7 +18,11 @@ const registerAuthUser = async (req, res, next) => {
     req = matchedData(req);
 
     const passwordHash = await encrypt(req.password);
-    const dataBody = { ...req, password: passwordHash };
+    const authObj = {
+      id_user: await uuidv4(),
+      password: passwordHash,
+    };
+    const dataBody = { ...req, ...authObj };
     req = dataBody;
 
     const user = new User(req);
@@ -32,7 +37,8 @@ const registerAuthUser = async (req, res, next) => {
     const newUsers = await user.createUser(req);
 
     if (newUsers[0].affectedRows > 0) {
-      const dataToken = { ...dataBody };
+
+      const {password,dni,birthday,...dataToken}=req;
 
       const token = await tokenSign(dataToken);
 
@@ -58,29 +64,39 @@ const registerAuthUserAdmin = async (req, res, next) => {
     req = matchedData(req);
 
     const passwordHash = await encrypt(req.password);
-    const dataBody = { ...req, password: passwordHash };
+    const authObj = {
+      password: passwordHash,
+      id_user: await uuidv4(),
+      id_admin: await uuidv4(),
+    };
+    const dataBody = { ...req,...authObj };
     req = dataBody;
 
-    const userAdmin = new UserAdmin(req);
+    const user = new User(req);
 
-    const existUser = await userAdmin.existUser(req);
+    const existUser = await user.existUser(req);
 
     if (existUser[0].length > 0) {
       handleHttpError(res, "El usuario ya existe", 401);
       return;
     }
 
-    const newUsers = await userAdmin.createUser(req);
+    const newUsers = await user.createUser(req);
 
     if (newUsers[0].affectedRows > 0) {
-      const dataToken = { ...dataBody };
+      const admin = new UserAdmin(req);
+      const newAdmin = await admin.createUser(req);
 
-      const token = await tokenSign(dataToken);
+      if (newAdmin[0].affectedRows > 0) {
+        const {password,dni,id_admin,fecha_nacimiento,apellido,nif,...dataToken}=req;
 
-      res.status(201).send({
-        status: 200,
-        token: token,
-      });
+        const token = await tokenSign(dataToken);
+
+        res.status(201).send({
+          status: 200,
+          token: token,
+        });
+      }
     }
   } catch (error) {
     console.log(error);
@@ -109,7 +125,7 @@ const loginAuthUser = async (req, res, next) => {
       return;
     }
 
-    const hashPassword = existUser[0][0].passwd;
+    const hashPassword = existUser[0][0].Passwd;
 
     const verifyCredentials = await compare(password, hashPassword);
 
@@ -119,9 +135,9 @@ const loginAuthUser = async (req, res, next) => {
     }
 
     const dataToken = {
-      email: existUser[0].email,
+      id_user: existUser[0].id_user,
       name_user: existUser[0].name_user,
-      rol: existUser[0].rol_user,
+      rol: existUser[0].id_rol,
     };
 
     const token = await tokenSign(dataToken);

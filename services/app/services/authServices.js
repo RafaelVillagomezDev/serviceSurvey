@@ -1,19 +1,19 @@
 
 
 const createUser = () => {
-    const query = 'INSERT INTO USUARIO (Email,Rol_user,Name_user, Surname_user,PasswD,Birthday,Dni,Privacy_policy) VALUES (?,?,?,?,?,?,?,?);';
+    const query = 'INSERT INTO USUARIO (Id_rol,Id_usuario,Email,Nombre_user,Apellido_user,Passwd,Fecha_nacimiento,Dni) VALUES (?,?,?,?,?,?,?,?);';
     return query;
 };
 
 const createUserAdmin = () => {
-    const query = 'INSERT INTO USUARIO (Email,Rol_user,Name_user, Surname_user,PasswD,Birthday,Nif,Privacy_policy) VALUES (?,?,?,?,?,?,?,?);';
+    const query = 'INSERT INTO ADMIN (Id_admin,Id_usuario,Nif,Tipo_compania) VALUES (?,?,?,?);';
     return query;
 };
 
 
 
 const existUser=()=>{
-    const query='SELECT email,passwd,rol_user,name_user,surname_user,dni,nif,birthday,privacy_policy FROM `usuario` WHERE `email` = ?;'
+    const query='SELECT * FROM `usuario` WHERE `email` = ?;'
     return query;
 }
 

@@ -15,18 +15,10 @@ const authToken = async (req, res, next) => {
   try {
     const token = req.headers.authorization.split(" ").pop();
     const payloadToken = await verifyToken(token);
-    if (!payloadToken.email) {
+    if (!payloadToken.id_user) {
       handleHttpError(res, "Accesso invalido", 401);
       return
     }
-    const rol= req.rol=payloadToken.rol
-    const email=req.email=payloadToken.email
-    const dataToken={
-        rol:rol,
-        email:email
-    }
-
-    req={...req,...dataToken}
 
   } catch (e) {
     handleHttpError(res, "Error auth token", 401);

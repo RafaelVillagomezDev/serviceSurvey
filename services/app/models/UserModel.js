@@ -2,16 +2,17 @@
 const authService = require("../services/authServices");
 const db = require("../connection/bd");
 const promisePool = db.pool.promise();
+const { v4: uuidv4 } = require("uuid");
+
 
 class User{
 
     
     constructor(req){
-        this.req=req;
-       
+        this.req = req
     }
 
-     async existUser (){
+    async existUser (){
         const queryExist = authService.existUser();
         const existUser = await promisePool.query(queryExist, [this.req.email]);
         return existUser
@@ -19,16 +20,15 @@ class User{
 
     async createUser(){
         const queryRegister = authService.createUser();
-        this.req.privacy_policy=this.req.privacy_policy?1:0;
         const user = await promisePool.query(queryRegister, [
+           this.req.id_rol,
+           this.req.id_user,
            this.req.email,
-           this.req.rol_user,
            this.req.name_user,
            this.req.surname,
            this.req.password,
            this.req.birthday,
-           this.req.dni,
-           this.req.privacy_policy
+           this.req.dni
          ]);
 
          return user

@@ -7,9 +7,9 @@ var secretToken = process.env.JWT_SECRET;
 
 const tokenSign = async (authUser) => {
   const sign = jsonwebtoken.sign({
-    email:authUser.email,
+    id_user:authUser.id_user,
     name_user:authUser.name_user,
-    rol:authUser.rol
+    rol:authUser.id_rol
 
   }, secretToken, {
     expiresIn: "1h",

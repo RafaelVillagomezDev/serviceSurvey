@@ -46,59 +46,64 @@ const validateUUID=(param)=>{
 }
 
 
+
 function validateCIF(cif) {
-  // Expresión regular para el formato del CIF
-  const cifRegex = /^[A-HJ-NP-S]\d{8}[A-Z\d]?$/;
+    // Expresión regular para el formato del CIF: 1 letra, 8 dígitos, 1 carácter de control (letra o número)
+    const cifRegex = /^[A-HJ-NP-S]\d{8}[A-Z\d]?$/;
 
-  // Verificar el formato
-  if (!cifRegex.test(cif)) {
-      return false;
-  }
+    // Verificar el formato
+    if (!cifRegex.test(cif)) {
+        return false;
+    }
 
-  // Desglosar el CIF
-  const letra = cif[0];
-  const numeros = cif.slice(1, 9);
-  const letraFinal = cif[9] || '';
+    // Desglosar el CIF
+    const letra = cif[0];
+    const numeros = cif.slice(1, 9); // Los 8 dígitos del CIF
+    const control = cif[9] || ''; // El carácter de control (puede ser opcional en algunos casos)
 
-  // Comprobar que los ocho primeros caracteres son dígitos
-  if (!/^\d{8}$/.test(numeros)) {
-      return false;
-  }
+    // Calcular el dígito o letra de control
+    const calculoControl = calcularControlCIF(letra, numeros);
 
-  // Cálculo de la letra de control
-  const calculoLetra = calcularLetraCIF(numeros);
+    // Comparar el dígito/letra calculada con el carácter de control
+    if (control && control !== calculoControl) {
+        return false;
+    }
 
-  // Comparar la letra calculada con la letra final
-  if (letraFinal && letraFinal !== calculoLetra) {
-      return false;
-  }
-
-  return true;
+    return true;
 }
 
-function calcularLetraCIF(numeros) {
-  const letras = "JABCDEFGHI";
-  let suma = 0;
-  let multiplicador = 2;
+function calcularControlCIF(letra, numeros) {
+    let sumaPares = 0;
+    let sumaImpares = 0;
 
-  // Sumar los dígitos en posiciones pares multiplicados por 2
-  for (let i = 7; i >= 0; i--) {
-      let digito = parseInt(numeros[i], 10);
-      if (i % 2 === 1) {
-          digito *= multiplicador;
-          if (digito > 9) {
-              digito -= 9;
-          }
-      }
-      suma += digito;
-  }
+    // Procesar los números
+    for (let i = 0; i < numeros.length; i++) {
+        const digito = parseInt(numeros[i], 10);
 
-  const resto = suma % 10;
-  const letraIndex = (10 - resto) % 10;
+        if (i % 2 === 1) { // Posiciones impares (en base 0)
+            sumaPares += digito;
+        } else { // Posiciones pares (en base 0)
+            let doble = digito * 2;
+            if (doble > 9) {
+                doble -= 9;
+            }
+            sumaImpares += doble;
+        }
+    }
 
-  return letras[letraIndex];
+    const sumaTotal = sumaPares + sumaImpares;
+    const unidad = sumaTotal % 10;
+    const digitoControl = unidad === 0 ? 0 : 10 - unidad;
+
+    // Determinar el carácter de control según la letra inicial
+    if ('KLMNPQRSW'.includes(letra)) {
+        // Empresas cuya letra de control es una letra
+        return "JABCDEFGHI"[digitoControl];
+    } else {
+        // Empresas cuya letra de control es un número
+        return digitoControl.toString();
+    }
 }
-
 
 
 
