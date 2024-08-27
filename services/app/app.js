@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors')
 
-//enpoint : http://localhost:3000/api/v1/workouts/patata//
+
 
 dotenv.config()
 
