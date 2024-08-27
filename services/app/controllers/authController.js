@@ -135,10 +135,12 @@ const loginAuthUser = async (req, res, next) => {
     }
 
     const dataToken = {
-      id_user: existUser[0].id_user,
-      name_user: existUser[0].name_user,
-      rol: existUser[0].id_rol,
-    };
+      id_user: existUser[0][0].Id_usuario,
+      name_user: existUser[0][0].Nombre_user,
+      id_rol: existUser[0][0].Id_rol,
+    }; 
+
+   
 
     const token = await tokenSign(dataToken);
 

@@ -5,16 +5,19 @@ var secretToken = process.env.JWT_SECRET;
   return: JsonWebToken
 */
 
-const tokenSign = async (authUser) => {
-  const sign = jsonwebtoken.sign({
-    id_user:authUser.id_user,
-    name_user:authUser.name_user,
-    rol:authUser.id_rol
-
-  }, secretToken, {
-    expiresIn: "1h",
-  });
-  return sign
+const tokenSign =async (authUser) => {
+  const sign = jsonwebtoken.sign(
+    {
+      id_user: authUser.id_user,
+      name_user: authUser.name_user,
+      id_rol: authUser.id_rol,
+    },
+    secretToken,
+    {
+      expiresIn: "1h",
+    }
+  );
+  return sign;
 };
 /*
     funcion: recibe el tokenSign(JsonWebToken) de session y secretKey y verifica la firma del token 
@@ -22,11 +25,11 @@ const tokenSign = async (authUser) => {
 */
 
 const verifyToken = async (tokenSign) => {
-    try{    
-        return jsonwebtoken.verify(tokenSign,secretToken)
-    }catch(e){
-        return null;
-    }
+  try {
+    return jsonwebtoken.verify(tokenSign, secretToken);
+  } catch (e) {
+    return null;
+  }
 };
 
 module.exports = {
