@@ -1,28 +1,32 @@
-const surveyService = require("../services/surveyServices");
-const productService = require("../services/productService");
-const subproductService = require("../services/subproductService");
 const userSurveyService = require("../services/userSurveyService");
-const db = require("../connection/bd");
+const Survey = require("../models/Survey/SurveyModel");
+const Product = require("../models/Product/ProductModel");
+const Subproduct = require("../models/Product/SubproductModel");
+
 const { matchedData, validationResult } = require("express-validator");
-const promisePool = db.pool.promise();
+
 const { handleHttpError } = require("../utils/handleError");
 const { v4: uuidv4 } = require("uuid");
 
-const getSurvey = async (req, res, next) => {
+const getSurveys = async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       res.status(422).json({ errors: errors.array() });
       return;
     }
-    const query = surveyService.getSurvey();
-    const result = await promisePool.query(query);
+
+    const survey = new Survey();
+
+    const existSurvey = await survey.getSurveys();
+
     res.send({
       status: 200,
-      data: result[0],
+      data: existSurvey[0],
     });
+
   } catch (error) {
-    handleHttpError(res, "Error al obtener encuestas");
+    handleHttpError(res, "Error al obtener encuestas",400);
     return;
   }
 };
@@ -35,93 +39,53 @@ const createSurvey = async (req, res, next) => {
       return;
     }
 
-    const dataProvidedToken = {
-      email: req.email,
-      rol: req.rol,
-    };
-
     req = matchedData(req);
 
-    const uuid_survey = await uuidv4();
-    const newReq = { ...req, id_encuesta: uuid_survey };
-    const {
-      id_encuesta,
-      dni,
-      producto,
-      mantenimiento,
-      tipo_mantenimiento,
-      estado,
-      id_subproducto,
-    } = newReq;
+    const surveySchema = {
+      id_encuesta:await uuidv4(),
+      id_producto: await uuidv4(),
+    };
 
-    const queryProduct = productService.existProduct();
-    const [existProduct] = await promisePool.query(queryProduct, [producto]);
+    req = { ...req, ...surveySchema };
 
-    if (existProduct.length == 0) {
-      handleHttpError(res, "ERROR AL INSERTAR PRODUCTO REVISAR BD", 401);
+    const product = new Product(req.id_producto, req.producto);
+
+    const createProduct = await product.createProduct();
+
+    if (createProduct.length == 0) {
+      handleHttpError(res, "Error al insertar producto", 400);
       return;
     }
 
-    const querySubproduct = subproductService.existSubproduct();
+    const subproduct=new Subproduct(req.id_producto,req.subproducto)
 
-    const [existSubproduct] = await promisePool.query(querySubproduct, [
-      id_subproducto,
-      producto,
-    ]);
+    const createSubproduct=await subproduct.createSubproduct()
 
-    if (existSubproduct.length == 0 && id_subproducto != "") {
-      handleHttpError(res, "ERROR AL INSERTAR SUBPRODUCTO REVISAR BD", 401);
+    if (createSubproduct.length == 0) {
+      handleHttpError(res, "Error al insertar subproducto", 400);
       return;
     }
 
-    const queryCreate = surveyService.createSurvey();
+    const survey = new Survey(req.id_encuesta,req.id_producto,req.descripcion)
 
-    const queryCreate2 = surveyService.createSurvey2();
-    let result = "";
+    const createSurvey= await survey.createSurvey()
 
-    if (id_subproducto == "") {
-      result = await promisePool.query(queryCreate2, [
-        id_encuesta,
-        dni,
-        producto,
-        mantenimiento,
-        tipo_mantenimiento,
-        estado,
-      ]);
-    } else {
-      result = await promisePool.query(queryCreate, [
-        id_encuesta,
-        dni,
-        producto,
-        mantenimiento,
-        tipo_mantenimiento,
-        estado,
-        id_subproducto,
-      ]);
-    }
-
-    const uuid_user_survey = await uuidv4();
-    const queryUserServiceCreate = userSurveyService.createUserSurvey();
-    const resultUserService = await promisePool.query(queryUserServiceCreate, [
-      uuid_user_survey,
-      dataProvidedToken.email,
-      id_encuesta,
-    ]);
-
-    if (resultUserService.length == 0) {
-      handleHttpError(res, "ERROR AL INSERTAR USER_SURVEY REVISAR BD", 401);
+    if (createSurvey.length == 0) {
+      handleHttpError(res, "Error al insertar encuesta", 400);
       return;
     }
 
-    if (result[0].affectedRows > 0) {
-      res.send({
-        status: 200,
-        data: "Encuesta creada satifactoriamente",
-      });
-    }
+    res.send({
+      status:200,
+      data:{
+        msg:"Encuesta creada satisfactoriamente"
+      }
+    })
+
+   
   } catch (error) {
     console.log(error);
-    handleHttpError(res, "Error al crear encuestas");
+    handleHttpError(res, "Error al crear encuesta",400);
     return;
   }
 };
@@ -191,7 +155,7 @@ const updateSurvey = async (req, res, next) => {
 };
 
 module.exports = {
-  getSurvey,
+  getSurveys,
   createSurvey,
   deleteSurvey,
   updateSurvey,

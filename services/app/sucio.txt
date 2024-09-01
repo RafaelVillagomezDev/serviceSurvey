@@ -1,0 +1,37 @@
+const mysql = require('mysql2/promise');
+
+// ... configuración del pool de conexiones ...
+
+async function insertUsuarios(usuarios) {
+  const connection = await pool.getConnection();
+  try {
+    await connection.beginTransaction();
+
+    // Construir la consulta de forma dinámica
+    const placeholders = usuarios.map(() => ' (?, ?)').join(',');
+    const sql = `INSERT INTO usuarios (nombre, email) VALUES ${placeholders}`;
+
+    // Crear un array plano con todos los valores
+    const values = usuarios.flat();
+
+    // Ejecutar la consulta dentro de la transacción
+    await connection.execute(sql, values);
+
+    await connection.commit();
+    console.log('Usuarios insertados con éxito en una transacción');
+  } catch (error) {
+    await connection.rollback();
+    console.error('Error al insertar usuarios:', error);
+  } finally {
+    connection.release();
+  }
+}
+
+// Datos de los usuarios
+const usuarios = [
+  ['Juan', 'juan@example.com'],
+  ['María', 'maria@example.com'],
+  ['Pedro', 'pedro@example.com']
+];
+
+insertUsuarios(usuarios);

@@ -1,6 +1,6 @@
 
-const authService = require("../services/authServices");
-const db = require("../connection/bd");
+const authService = require("../../services/authServices");
+const db = require("../../connection/bd");
 const promisePool = db.pool.promise();
 const { v4: uuidv4 } = require("uuid");
 

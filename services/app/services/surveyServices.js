@@ -1,27 +1,15 @@
-const getSurvey = () => {
-  const query = "SELECT * from encuesta;";
+const getSurveys = () => {
+  const query = "SELECT * from `encuesta`";
   return query;
 };
 
 
 const createSurvey = () => {
-  const query = "INSERT INTO ENCUESTA (Id_encuesta,Dni,Producto,Mantenimiento,Tipo_mantenimiento,Estado,Id_subproducto) VALUES (?,UPPER(?),UPPER(?),UPPER(?),UPPER(?),UPPER(?),?);";
+  const query ="INSERT INTO encuesta(Id_encuesta,Id_producto,Descripcion) VALUES (?,?,?);";
   return query;
 };
-
-const createSurvey2 = () => {
-  const query = "INSERT INTO ENCUESTA (Id_encuesta,Dni,Producto,Mantenimiento,Tipo_mantenimiento,Estado) VALUES (?,UPPER(?),UPPER(?),UPPER(?),UPPER(?),UPPER(?));";
-  return query;
-};
-
-const deleteSurvey=()=>{
-  const query = 'DELETE FROM encuesta WHERE  id_encuesta = ?;';
-  return query;
-}
 
 module.exports = {
-  getSurvey,
-  createSurvey,
-  createSurvey2,
-  deleteSurvey
+  getSurveys,
+  createSurvey
 };

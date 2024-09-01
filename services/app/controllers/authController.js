@@ -3,8 +3,8 @@ const { matchedData, validationResult } = require("express-validator");
 const { handleHttpError } = require("../utils/handleError");
 const { encrypt, compare } = require("../utils/handlePassword");
 const { tokenSign } = require("../utils/handeJwt");
-const User = require("../models/UserModel");
-const UserAdmin = require("../models/UserAdminModel");
+const User = require("../models/Users/UserModel");
+const UserAdmin = require("../models/Users/UserAdminModel");
 const { v4: uuidv4 } = require("uuid");
 
 const registerAuthUser = async (req, res, next) => {
