@@ -1,7 +1,6 @@
 const userSurveyService = require("../services/userSurveyService");
 const Survey = require("../models/Survey/SurveyModel");
-const Product = require("../models/Product/ProductModel");
-const Subproduct = require("../models/Product/SubproductModel");
+
 
 const { matchedData, validationResult } = require("express-validator");
 
@@ -48,23 +47,7 @@ const createSurvey = async (req, res, next) => {
 
     req = { ...req, ...surveySchema };
 
-    const product = new Product(req.id_producto, req.producto);
-
-    const createProduct = await product.createProduct();
-
-    if (createProduct.length == 0) {
-      handleHttpError(res, "Error al insertar producto", 400);
-      return;
-    }
-
-    const subproduct=new Subproduct(req.id_producto,req.subproducto)
-
-    const createSubproduct=await subproduct.createSubproduct()
-
-    if (createSubproduct.length == 0) {
-      handleHttpError(res, "Error al insertar subproducto", 400);
-      return;
-    }
+   
 
     const survey = new Survey(req.id_encuesta,req.id_producto,req.descripcion)
 

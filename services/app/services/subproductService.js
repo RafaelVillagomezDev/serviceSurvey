@@ -3,8 +3,8 @@ const existSubproduct = () => {
   return query;
 };
 
-const createSubproduct = () => {
-  const query ="INSERT INTO subproduct(Id_producto,Subproducto) VALUES (?,?);";
+const createSubproduct = (placeholders) => {
+  const query =`INSERT INTO usuarios (nombre, email) VALUES ${placeholders}`;;
   return query;
 };
 

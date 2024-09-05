@@ -15,6 +15,12 @@ class Survey {
     return surveys;
   }
 
+  static async existSurvey(id_encuesta){
+    const queryExistSurvey=surveyService.existSurvey();
+    const survey=await promisePool.query(queryExistSurvey,[id_encuesta])
+    return survey
+  }
+
   async createSurvey() {
     const queryExist = surveyService.createSurvey();
     const survey = await promisePool.query(queryExist,[this.id_encuesta,this.id_producto,this.descripcion]);

@@ -4,9 +4,6 @@ function validateSurvey(method){
    switch (method) {
        case 'create': {
         return [ 
-
-               body('producto','Producto invalido ').escape().trim().isLength({max:40}).isString(),
-               body('subproducto','Subproducto invalido ').escape().trim().isLength({max:40}).isString(),
                body('descripcion','Descripcion invalida ').escape().trim().isLength({max:40}).isString(),
           ]   
        }

@@ -29,18 +29,6 @@ const authToken = async (req, res, next) => {
   next();
 };
 
-/*
-  Midleware: funcion que verifica las rutas dependiendo de permisos  
-  
-*/
-
-const authCredentials = async (req, res, next) => {
-  if(req.rol!="admin"){
-    handleHttpError(res, "Error no tienes permisos de admin", 401);
-    return
-  }
-  next();
-};
 
 
-module.exports = { authToken ,authCredentials};
+module.exports = { authToken};

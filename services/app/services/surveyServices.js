@@ -3,6 +3,10 @@ const getSurveys = () => {
   return query;
 };
 
+const existSurvey=()=>{
+  const query = "SELECT * from `encuesta` where Id_encuesta = ?;";
+  return query;
+}
 
 const createSurvey = () => {
   const query ="INSERT INTO encuesta(Id_encuesta,Id_producto,Descripcion) VALUES (?,?,?);";
@@ -11,5 +15,6 @@ const createSurvey = () => {
 
 module.exports = {
   getSurveys,
+  existSurvey,
   createSurvey
 };
