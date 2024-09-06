@@ -1,5 +1,4 @@
 const Product = require("../models/Product/ProductModel");
-const Subproduct = require("../models/Product/SubproductModel");
 const { matchedData, validationResult } = require("express-validator");
 const { handleHttpError } = require("../utils/handleError");
 const { v4: uuidv4 } = require("uuid");

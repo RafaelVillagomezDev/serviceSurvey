@@ -21,11 +21,10 @@ class Subproduct {
       await connection.beginTransaction(); // Iniciar la transacción
   
       // Construir placeholders para la consulta
-      const placeholders = this.req.subproductos.map(() => ' (?, ?)').join(',');
-      const query = `INSERT INTO subproductos (id_producto, subproducto) VALUES ${placeholders}`;
-  
+      const placeholders = this.req.subproductos.map(() => ' (?,?)').join(',');
+      const query = `INSERT INTO subproduct (Id_producto, Subproducto) VALUES ${placeholders}`;
       // Extraer los valores en un array plano
-      const values = this.req.subproductos.flatMap(subproduct => [subproduct.id_producto, subproduct.subproducto]);
+      const values = this.req.subproductos.flatMap(subproduct => [this.req.id_producto,subproduct.subproducto]);
   
       // Ejecutar la consulta con los valores
       const [result] = await connection.execute(query, values);

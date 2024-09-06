@@ -14,6 +14,7 @@ var authRouterV1=require('./routes/v1/Auth');
 var surveyRouterV1=require('./routes/v1/SurveyRoutes');
 var questionRouterV1=require('./routes/v1/QuestionRoutes');
 var productRouterV1=require('./routes/v1/ProductRoutes');
+var subproductRouterV1=require('./routes/v1/SubproductRoutes');
 var app = express();
 
 // view engine setup
@@ -31,6 +32,7 @@ app.use('/api/v1/auth', authRouterV1);
 app.use('/api/v1/survey', surveyRouterV1);
 app.use('/api/v1/question', questionRouterV1)
 app.use('/api/v1/product', productRouterV1)
+app.use('/api/v1/subproduct',subproductRouterV1)
 
 
 app.use((err, req, res, next) => {
