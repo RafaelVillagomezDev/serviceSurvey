@@ -1,10 +1,17 @@
-const existProduct = () => {
-  const query = "SELECT * from `product` WHERE `producto` = ?;";
+const existProduct = (productList) => {
+  const placeholders = productList.map(() => "?").join(", ");
+  const query = `
+    SELECT Producto
+    FROM product
+    WHERE Id_producto = ?
+      AND Producto IN (${placeholders})
+    GROUP BY Producto;
+  `;
   return query;
 };
 
-const createProduct = () => {
-  const query ="INSERT INTO product(Id_producto,Producto) VALUES (?,?);";
+const createProduct = (placeholders) => {
+  const query = `INSERT INTO product (Id_producto,Producto,Categoria,Id_container) VALUES ${placeholders};`;
   return query;
 };
 

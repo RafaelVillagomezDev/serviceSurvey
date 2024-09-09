@@ -24,7 +24,7 @@ function validateQuestion(method){
                     throw new Error(error);
                 }
               })
-          ]   
+          ];   
        }
      }
 }

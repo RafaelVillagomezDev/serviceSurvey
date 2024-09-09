@@ -1,7 +1,7 @@
 const Subproduct = require("../models/Product/SubproductModel");
 const { matchedData, validationResult } = require("express-validator");
 const { handleHttpError } = require("../utils/handleError");
-const { v4: uuidv4 } = require("uuid");
+
 
 const createSubproduct = async (req, res, next) => {
   try {
@@ -11,15 +11,21 @@ const createSubproduct = async (req, res, next) => {
       return;
     }
 
- 
-    
     req = matchedData(req);
-
-
 
     const subproduct = new Subproduct(req);
 
-    const createSubproduct = await subproduct.createSubproduct()
+    const existSubproduct = await subproduct.existSubproduct();
+
+    if (existSubproduct.length > 0) {
+      const existingNames = existSubproduct.map((sub) => sub.Subproducto);
+      
+      handleHttpError(res, `Los siguientes subproductos ya existen ${existingNames.join(", ")}`)
+
+      return
+    }
+
+    const createSubproduct = await subproduct.createSubproduct();
 
     if (createSubproduct.length == 0) {
       handleHttpError(res, "Error al insertar subproducto", 400);

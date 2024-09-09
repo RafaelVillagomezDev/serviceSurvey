@@ -1,7 +1,9 @@
 const Product = require("../models/Product/ProductModel");
+const ContainerProduct = require("../models/Product/ContainerProductModel");
 const { matchedData, validationResult } = require("express-validator");
 const { handleHttpError } = require("../utils/handleError");
 const { v4: uuidv4 } = require("uuid");
+
 
 const createProduct = async (req, res, next) => {
   try {
@@ -12,7 +14,7 @@ const createProduct = async (req, res, next) => {
     }
 
     const surveySchema = {
-      id_producto: await uuidv4(),
+      id_container:await uuidv4()
     };
 
     
@@ -20,7 +22,26 @@ const createProduct = async (req, res, next) => {
 
     req = { ...req, ...surveySchema };
 
-    const product = new Product(req.id_producto,req.producto);
+    const product = new Product(req);
+
+    const existProduct = await product.existProduct();
+
+    if (existProduct.length > 0) {
+      const existingNames = existProduct.map((sub) => sub.Producto);
+      
+      handleHttpError(res, `Los siguientes productos ya existen ${existingNames.join(", ")}`)
+
+      return
+    }
+ 
+    const containerProduct = new ContainerProduct(req.id_container);
+
+    const createContainer=await containerProduct.createContainer()
+
+    if (createContainer.length == 0) {
+      handleHttpError(res, "Error al insertar contenedor", 400);
+      return;
+    }
 
     const createProduct = await product.createProduct();
 
