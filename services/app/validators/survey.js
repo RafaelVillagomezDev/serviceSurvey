@@ -5,14 +5,13 @@ function validateSurvey(method){
        case 'create': {
         return [ 
                body('descripcion','Descripcion invalida ').escape().trim().isLength({max:40}).isString(),
+               body('id_usuario','Usuario invalido debe ser un UUID').escape().trim().isUUID(),
+               body('id_container','Contenedor invalido debe ser un UUID').escape().trim().isUUID()
           ]   
        }
        case 'delete': {
           return [ 
-                 param('id_encuesta','Id encuesta debe ser un UUID').custom(value=>{
-                      const uuid=validateUUID(value)
-                      return uuid
-                 }).escape().trim(),
+                 param('id_encuesta','Id encuesta debe ser un UUID').escape().trim().isUUID()
             ]   
          }
        case 'update':{

@@ -42,14 +42,13 @@ const createSurvey = async (req, res, next) => {
 
     const surveySchema = {
       id_encuesta:await uuidv4(),
-      id_producto: await uuidv4(),
     };
 
     req = { ...req, ...surveySchema };
 
    
 
-    const survey = new Survey(req.id_encuesta,req.id_producto,req.descripcion)
+    const survey = new Survey(req.id_encuesta,req.descripcion,req.id_container,req.id_usuario)
 
     const createSurvey= await survey.createSurvey()
 

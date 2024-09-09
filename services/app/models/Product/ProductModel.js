@@ -39,7 +39,7 @@ class Product {
       await connection.beginTransaction(); // Iniciar la transacción
 
       // Construir placeholders para la consulta
-      const placeholders = this.req.productos.map(() => " (?,?,?,?)").join(",");
+      const placeholders = this.req.productos.map(() => "(?,?,?,?)").join(",");
       const query = productService.createProduct(placeholders)
 
 

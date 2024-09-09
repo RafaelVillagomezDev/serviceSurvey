@@ -2,10 +2,11 @@ const surveyService = require("../../services/surveyServices");
 const db = require("../../connection/bd");
 const promisePool = db.pool.promise();
 class Survey {
-  constructor(id_encuesta,id_producto,descripcion) {
+  constructor(id_encuesta,descripcion,id_container,id_usuario) {
     this.id_encuesta = id_encuesta;
-    this.id_producto = id_producto;
-    this.descripcion=descripcion;
+    this.descripcion = descripcion;
+    this.id_container = id_container;
+    this.id_usuario = id_usuario;
   }
 
   async getSurveys() {
@@ -15,15 +16,20 @@ class Survey {
     return surveys;
   }
 
-  static async existSurvey(id_encuesta){
-    const queryExistSurvey=surveyService.existSurvey();
-    const survey=await promisePool.query(queryExistSurvey,[id_encuesta])
-    return survey
+  static async existSurvey(id_encuesta) {
+    const queryExistSurvey = surveyService.existSurvey();
+    const survey = await promisePool.query(queryExistSurvey, [id_encuesta]);
+    return survey;
   }
 
   async createSurvey() {
     const queryExist = surveyService.createSurvey();
-    const survey = await promisePool.query(queryExist,[this.id_encuesta,this.id_producto,this.descripcion]);
+    const survey = await promisePool.query(queryExist, [
+      this.id_encuesta,
+      this.descripcion,
+      this.id_container,
+      this.id_usuario,
+    ]);
     return survey;
   }
 }

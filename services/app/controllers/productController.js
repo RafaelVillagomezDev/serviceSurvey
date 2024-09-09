@@ -1,5 +1,4 @@
 const Product = require("../models/Product/ProductModel");
-const ContainerProduct = require("../models/Product/ContainerProductModel");
 const { matchedData, validationResult } = require("express-validator");
 const { handleHttpError } = require("../utils/handleError");
 const { v4: uuidv4 } = require("uuid");
@@ -13,14 +12,11 @@ const createProduct = async (req, res, next) => {
       return;
     }
 
-    const surveySchema = {
-      id_container:await uuidv4()
-    };
-
+  
     
     req = matchedData(req);
 
-    req = { ...req, ...surveySchema };
+   
 
     const product = new Product(req);
 
@@ -34,15 +30,7 @@ const createProduct = async (req, res, next) => {
       return
     }
  
-    const containerProduct = new ContainerProduct(req.id_container);
-
-    const createContainer=await containerProduct.createContainer()
-
-    if (createContainer.length == 0) {
-      handleHttpError(res, "Error al insertar contenedor", 400);
-      return;
-    }
-
+  
     const createProduct = await product.createProduct();
 
     if (createProduct.length == 0) {

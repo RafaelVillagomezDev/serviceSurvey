@@ -1,5 +1,5 @@
 const createContainer = () => {
-    const query ="INSERT INTO container_product(Id_container) VALUES (?);";
+    const query ="INSERT INTO container_product(Id_container,Id_usuario) VALUES (?,?);";
     return query;
 };
 

@@ -6,6 +6,7 @@ function validateProduct(method){
         return [ 
           body('productos','Producto invalido').isArray(),
           body('categoria','Categoría invalida ').escape().trim().isLength({max:40}).isString(),
+          body('id_container','Contenedor invalido').escape().trim().isUUID()
           ]   
        }
      }

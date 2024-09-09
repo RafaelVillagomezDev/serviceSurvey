@@ -9,7 +9,7 @@ const existSurvey=()=>{
 }
 
 const createSurvey = () => {
-  const query ="INSERT INTO encuesta(Id_encuesta,Id_producto,Descripcion) VALUES (?,?,?);";
+  const query ="INSERT INTO encuesta(Id_encuesta,Descripcion,Id_container,Id_usuario) VALUES (?,?,?,?);";
   return query;
 };
 
