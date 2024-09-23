@@ -8,4 +8,5 @@ const { validateProduct } = require('../../validators/product');
 
 router.post('/create',authToken,validateProduct("create"),productController.createProduct);
 
+
 module.exports = router
