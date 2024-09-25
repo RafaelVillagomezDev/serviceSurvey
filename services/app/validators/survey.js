@@ -1,7 +1,12 @@
 const {body,param}= require('express-validator');
-const {testRegex,validateUUID}=require("../utils/handleRegex")
+const {testRegex}=require("../utils/handleRegex")
 function validateSurvey(method){
    switch (method) {
+       case 'get': {
+          return[
+               param('id_encuesta','Id encuesta debe ser un UUID').escape().trim().isUUID()
+          ]
+       }
        case 'create': {
         return [ 
                body('descripcion','Descripcion invalida ').escape().trim().isLength({max:40}).isString(),

@@ -15,7 +15,9 @@ const getSurveys = async (req, res, next) => {
       return;
     }
 
-    const survey = new Survey();
+    req = matchedData(req);
+
+    const survey = new Survey(req);
 
     const existSurvey = await survey.getSurveys();
 
@@ -29,6 +31,31 @@ const getSurveys = async (req, res, next) => {
     return;
   }
 };
+
+const getSurveyId=async(req,res,next)=>{
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(422).json({ errors: errors.array() });
+      return;
+    }
+
+    req = matchedData(req);
+    
+    const survey = new Survey(req);
+
+    const existSurvey = await survey.getSurveyId();
+
+    res.send({
+      status: 200,
+      data: existSurvey[0],
+    });
+
+  } catch (error) {
+    handleHttpError(res, "Error al obtener encuesta",400);
+    return;
+  }
+}
 
 const createSurvey = async (req, res, next) => {
   try {
@@ -48,7 +75,7 @@ const createSurvey = async (req, res, next) => {
 
    
 
-    const survey = new Survey(req.id_encuesta,req.descripcion,req.id_container,req.id_usuario)
+    const survey = new Survey(req)
 
     const createSurvey= await survey.createSurvey()
 
@@ -138,6 +165,7 @@ const updateSurvey = async (req, res, next) => {
 
 module.exports = {
   getSurveys,
+  getSurveyId,
   createSurvey,
   deleteSurvey,
   updateSurvey,

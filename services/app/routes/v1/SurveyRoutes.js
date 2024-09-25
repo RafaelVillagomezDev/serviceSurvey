@@ -6,6 +6,7 @@ const validateSurvey=require("../../validators/survey");
 
 
 router.get('/',authToken,surveyController.getSurveys);
+router.get('/:id_encuesta',authToken,validateSurvey("get"),surveyController.getSurveyId);
 router.post('/create',authToken,validateSurvey("create"),surveyController.createSurvey );
 router.delete('/delete/:id_encuesta',authToken,validateSurvey("delete"),surveyController.deleteSurvey );
 router.put('/update',authToken,validateSurvey("update"),surveyController.updateSurvey);
