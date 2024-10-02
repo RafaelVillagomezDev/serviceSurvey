@@ -7,6 +7,31 @@ const User = require("../models/Users/UserModel");
 const UserAdmin = require("../models/Users/UserAdminModel");
 const { v4: uuidv4 } = require("uuid");
 
+/**
+ * @swagger
+ * /api/v1/auth/login:
+ *   post:
+ *     tags:
+ *       - Auth
+ *     summary: Iniciar sesión de un usuario
+ *     description: Inicia sesión de un usuario por nombre de usuario y contraseña.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Inicio de sesión exitoso
+ *       401:
+ *         description: No autorizado
+ */
 const registerAuthUser = async (req, res, next) => {
   try {
     const errors = validationResult(req);
