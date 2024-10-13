@@ -9,28 +9,84 @@ const { v4: uuidv4 } = require("uuid");
 
 /**
  * @swagger
- * /api/v1/auth/login:
+ * /api/v1/auth/register:
  *   post:
+ *     summary: Registrar un nuevo usuario
+ *     description: Registra un nuevo usuario con detalles de autenticación y devuelve un token JWT al registrarse exitosamente.
  *     tags:
- *       - Auth
- *     summary: Iniciar sesión de un usuario
- *     description: Inicia sesión de un usuario por nombre de usuario y contraseña.
+ *       - Autenticación
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - id_rol
+ *               - email
+ *               - name_user
+ *               - surname
+ *               - password
+ *               - dni
+ *               - birthday
+ *               
  *             properties:
- *               username:
- *                 type: string
  *               password:
  *                 type: string
+ *                 format: password
+ *                 description: Contraseña del usuario.
+ *               id_rol:
+ *                 type: string
+ *                 description: Identificador de rol.
+ *               dni:
+ *                 type: string
+ *                 description: DNI o Nie (Número de Identificación Nacional) del usuario.
+ *               birthday:
+ *                 type: string
+ *                 format: date
+ *                 description: Fecha de nacimiento del usuario.
+ *               name_user:
+ *                 type: string
+ *                 description: Nombre del usuario.
+ *               surname:
+ *                 type: string
+ *                 description: Apellido del usuario.
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 description: Dirección de correo electrónico del usuario.
  *     responses:
- *       200:
- *         description: Inicio de sesión exitoso
+ *       201:
+ *         description: Usuario registrado exitosamente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 200
+ *                 token:
+ *                   type: string
+ *                   description: Token JWT para sesiones autenticadas.
  *       401:
- *         description: No autorizado
+ *         description: No autorizado - El usuario ya existe.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       422:
+ *         description: Entidad no procesable - Errores de validación.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationErrorResponse'
+ *       500:
+ *         description: Error Interno del Servidor - Fallo en el registro.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  */
 const registerAuthUser = async (req, res, next) => {
   try {
@@ -77,7 +133,94 @@ const registerAuthUser = async (req, res, next) => {
     handleHttpError(res, "Error al registrar usuario");
   }
 };
-
+/**
+ * @swagger
+ * /api/v1/auth/registerAdmin:
+ *   post:
+ *     summary: Registrar un nuevo usuario de tipo administrador
+ *     description: Registra un nuevo usuario administrador con detalles de autenticación y devuelve un token JWT al registrarse exitosamente.
+ *     tags:
+ *       - Autenticación
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - id_rol
+ *               - email
+ *               - name_user
+ *               - surname
+ *               - password
+ *               - dni
+ *               - birthday
+ *               - tipo_compania
+ *               - nif
+ *             properties:
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 description: Contraseña del usuario.
+ *               id_rol:
+ *                 type: string
+ *                 description: Identificador de rol.
+ *               dni:
+ *                 type: string
+ *                 description: DNI o Nie (Número de Identificación Nacional) del usuario.
+ *               nif:
+ *                 type: string
+ *                 description: NIF (Número de Identificación Nacional fiscal).
+ *               tipo_compania:
+ *                 type: string
+ *                 description: Tipo de compañia de empresa 
+ *               birthday:
+ *                 type: string
+ *                 format: date
+ *                 description: Fecha de nacimiento del usuario.
+ *               name_user:
+ *                 type: string
+ *                 description: Nombre del usuario.
+ *               surname:
+ *                 type: string
+ *                 description: Apellido del usuario.
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 description: Dirección de correo electrónico del usuario.
+ *     responses:
+ *       201:
+ *         description: Usuario registrado exitosamente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 200
+ *                 token:
+ *                   type: string
+ *                   description: Token JWT para sesiones autenticadas.
+ *       401:
+ *         description: No autorizado - El usuario ya existe.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       422:
+ *         description: Entidad no procesable - Errores de validación.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationErrorResponse'
+ *       500:
+ *         description: Error Interno del Servidor - Fallo en el registro.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 const registerAuthUserAdmin = async (req, res, next) => {
   try {
     const errors = validationResult(req);
@@ -128,6 +271,70 @@ const registerAuthUserAdmin = async (req, res, next) => {
     handleHttpError(res, "Error al registrar usuario");
   }
 };
+
+/**
+ * @swagger
+ * /api/v1/auth/login:
+ *   post:
+ *     summary: Iniciar sesión de usuario
+ *     description: Autentica a un usuario con sus credenciales (email y contraseña) y devuelve un token JWT si las credenciales son correctas.
+ *     tags:
+ *       - Autenticación
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 description: Dirección de correo electrónico del usuario.
+ *                 example: usuario@example.com
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 description: Contraseña del usuario.
+ *                 example: contraseñaSegura123
+ *     responses:
+ *       200:
+ *         description: Inicio de sesión exitoso. Se devuelve un token JWT.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 200
+ *                 token:
+ *                   type: string
+ *                   description: Token JWT para sesiones autenticadas.
+ *                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *       401:
+ *         description: No autorizado - El usuario no existe o las credenciales son incorrectas.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       422:
+ *         description: Entidad no procesable - Error de validación en los datos proporcionados.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationErrorResponse'
+ *       500:
+ *         description: Error interno del servidor.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
+
 
 const loginAuthUser = async (req, res, next) => {
   try {

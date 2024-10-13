@@ -1,6 +1,9 @@
 var  swaggerJsdoc = require('swagger-jsdoc');
 var  swaggerUi = require('swagger-ui-express');
 var path=require('path')
+const glob = require('glob');
+
+
 
 const options = {
   definition: {
@@ -24,12 +27,52 @@ const options = {
         url: "<your live url here>",
         description: "Live server"
       },
-    ]
+    ],
+    components: {
+      schemas: {
+        ErrorResponse: {
+          type: 'object',
+          properties: {
+            status: {
+              type: 'integer',
+              example: 500
+            },
+            message: {
+              type: 'string',
+              example: 'Error interno del servidor'
+            }
+          }
+        },
+        ValidationErrorResponse: {
+          type: 'object',
+          properties: {
+            status: {
+              type: 'integer',
+              example: 422
+            },
+            errors: {
+              type: 'array',
+              items: {
+                type: 'string'
+              },
+              example: ['El campo email es obligatorio', 'La contraseña debe tener al menos 8 caracteres']
+            }
+          }
+        }
+      },
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    }
   },
   // looks for configuration in specified directories
-  apis: [`${path.join(__dirname,"./controllers*.js")}`],
+  apis: [ path.resolve(__dirname, '../controllers/*.js') ],
 }
 const swaggerSpec = swaggerJsdoc(options)
 
-
+console.log(swaggerSpec)
 module.exports = { swaggerUi, swaggerSpec };
