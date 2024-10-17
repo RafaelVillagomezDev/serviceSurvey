@@ -19,19 +19,14 @@ const testRegex=(regex,value)=>{
  extra: Esta funcion la usaremos para decidir el rol del usuario
 */
 
-const validateRolAdmin=(rol)=>{
-    if(rol=="admin"){
-        return true 
-    }
-    return false
+const validateRolUser=(rol)=>{
+    const roles = [ "user"];
+   return roles.find(r => r === rol?true:false) 
 }
 
-
-const validateRolUser=(rol)=>{
-  if(rol=="user"){
-      return true 
-  }
-  return false
+const validateRolAdmin=(rol)=>{
+    const roles = ["admin"];
+   return roles.find(r => r === rol?true:false); 
 }
 
 

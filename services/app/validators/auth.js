@@ -1,5 +1,5 @@
  const {body}= require('express-validator');
- const {testRegex,validateUUID, validateCIF, validateRol, validateRolAdmin, validateRolUser}=require("../utils/handleRegex")
+ const {testRegex,validateCIF, validateRol, validateRolAdmin, validateRolUser}=require("../utils/handleRegex")
 function validateAuth(method,req){
     console.log(req)
     switch (method) {
@@ -16,8 +16,9 @@ function validateAuth(method,req){
                return dniCheck
             }).escape().trim(),
             body("birthday","fecha de nacimiento invalida").escape().trim().isDate(),
-            body('id_rol','rol invalido').custom(value=>{ 
-               return value=="1"?value:"";
+            body('rol','rol invalido').custom(value=>{ 
+               
+               return validateRolUser(value)
             }).escape().trim(),
            ]   
         }
@@ -39,8 +40,8 @@ function validateAuth(method,req){
             }).escape().trim(),
             body('tipo_compania','tipo compañia invalido').trim().escape().isAlpha(),
             body("birthday","fecha de nacimiento invalida").escape().trim().isDate(),
-            body('id_rol','rol invalido').custom(value=>{ 
-               return value=="2"?value:"";
+            body('rol','rol invalido').custom(value=>{ 
+               return validateRolAdmin(value)
             }).escape().trim(),
            ]   
         }

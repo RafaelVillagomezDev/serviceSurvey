@@ -21,7 +21,7 @@ class User{
     async createUser(){
         const queryRegister = authService.createUser();
         const user = await promisePool.query(queryRegister, [
-           this.req.id_rol,
+           this.req.rol,
            this.req.id_user,
            this.req.email,
            this.req.name_user,

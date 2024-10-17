@@ -366,10 +366,12 @@ const loginAuthUser = async (req, res, next) => {
       return;
     }
 
+    
+
     const dataToken = {
       id_user: existUser[0][0].Id_usuario,
       name_user: existUser[0][0].Nombre_user,
-      id_rol: existUser[0][0].Id_rol,
+      rol: existUser[0][0].Rol_Value,
     }; 
 
    

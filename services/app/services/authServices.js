@@ -1,7 +1,7 @@
 
 
 const createUser = () => {
-    const query = 'INSERT INTO USUARIO (Id_rol,Id_usuario,Email,Nombre_user,Apellido_user,Passwd,Fecha_nacimiento,Dni) VALUES (?,?,?,?,?,?,?,?);';
+    const query = 'INSERT INTO USUARIO (Rol_value,Id_usuario,Email,Nombre_user,Apellido_user,Passwd,Fecha_nacimiento,Dni) VALUES (?,?,?,?,?,?,?,?);';
     return query;
 };
 

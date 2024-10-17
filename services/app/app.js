@@ -15,6 +15,7 @@ var questionRouterV1=require('./routes/v1/QuestionRoutes');
 var productRouterV1=require('./routes/v1/ProductRoutes');
 var subproductRouterV1=require('./routes/v1/SubproductRoutes');
 var containerRouterV1=require('./routes/v1/ContainerRoutes');
+var rolRouterV1=require('./routes/v1/RolRoutes');
 
 var app = express();
 
@@ -35,6 +36,7 @@ app.use('/api/v1/question', questionRouterV1)
 app.use('/api/v1/product', productRouterV1)
 app.use('/api/v1/subproduct',subproductRouterV1)
 app.use('/api/v1/container',containerRouterV1)
+app.use('/api/v1/rol',rolRouterV1)
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use((err, req, res, next) => {

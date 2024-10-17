@@ -10,7 +10,7 @@ const tokenSign =async (authUser) => {
     {
       id_user: authUser.id_user,
       name_user: authUser.name_user,
-      id_rol: authUser.id_rol,
+      rol: authUser.rol,
     },
     secretToken,
     {

@@ -74,5 +74,4 @@ const options = {
 }
 const swaggerSpec = swaggerJsdoc(options)
 
-console.log(swaggerSpec)
 module.exports = { swaggerUi, swaggerSpec };
