@@ -1,14 +1,15 @@
 const Subproduct = require("../models/Product/SubproductModel");
 const { matchedData, validationResult } = require("express-validator");
 const { handleHttpError } = require("../utils/handleError");
+const { handleErrorGroup } = require("../utils/handleErrorGroup");
 
 
 const createSubproduct = async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      res.status(422).json({ errors: errors.array() });
-      return;
+      handleErrorGroup(res,errors,"Error al crear producto",422)
+      return
     }
 
     req = matchedData(req);

@@ -2,6 +2,7 @@ const questionService = require("../services/questionService");
 const Question = require("../models/Question/QuestionModel");
 
 const { matchedData, validationResult } = require("express-validator");
+const { handleErrorGroup } = require("../utils/handleErrorGroup");
 
 /**
  * @swagger
@@ -91,8 +92,8 @@ const createQuestion = async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      res.status(422).json({ errors: errors.array() });
-      return;
+      handleErrorGroup(res,errors,"Error al crear pregunta",422)
+      return
     }
 
     req = matchedData(req);

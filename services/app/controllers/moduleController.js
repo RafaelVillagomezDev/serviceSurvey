@@ -5,13 +5,14 @@ const { matchedData, validationResult } = require("express-validator");
 
 const { handleHttpError } = require("../utils/handleError");
 const { v4: uuidv4 } = require("uuid");
+const { handleErrorGroup } = require("../utils/handleErrorGroup");
 
 const createModule = async (req, res, next) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        res.status(422).json({ errors: errors.array() });
-        return;
+        handleErrorGroup(res,errors,"Error en creacion modulo",422)
+        return
       }
   
       req = matchedData(req);
@@ -51,8 +52,8 @@ const getModule = async (req, res, next) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        res.status(422).json({ errors: errors.array() });
-        return;
+        handleErrorGroup(res,errors,"Error en auth",422)
+        return
       }
   
       req = matchedData(req);

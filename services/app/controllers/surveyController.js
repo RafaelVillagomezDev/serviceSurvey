@@ -6,13 +6,14 @@ const { matchedData, validationResult } = require("express-validator");
 
 const { handleHttpError } = require("../utils/handleError");
 const { v4: uuidv4 } = require("uuid");
+const { handleErrorGroup } = require("../utils/handleErrorGroup");
 
 const getSurveys = async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      res.status(422).json({ errors: errors.array() });
-      return;
+      handleErrorGroup(res,errors,"Error al obtener encuesta",422)
+      return
     }
 
     req = matchedData(req);
@@ -36,8 +37,8 @@ const getSurveyId=async(req,res,next)=>{
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      res.status(422).json({ errors: errors.array() });
-      return;
+      handleErrorGroup(res,errors,"Error al obtener encuesta",422)
+        return
     }
 
     req = matchedData(req);
@@ -61,8 +62,8 @@ const createSurvey = async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      res.status(422).json({ errors: errors.array() });
-      return;
+      handleErrorGroup(res,errors,"Error al crear encuesta",422)
+      return
     }
 
     req = matchedData(req);
@@ -103,8 +104,8 @@ const deleteSurvey = async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      res.status(422).json({ errors: errors.array() });
-      return;
+      handleErrorGroup(res,errors,"Error al borrar encuesta",422)
+      return
     }
 
     req = matchedData(req);
@@ -147,9 +148,8 @@ const updateSurvey = async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      6;
-      res.status(422).json({ errors: errors.array() });
-      return;
+      handleErrorGroup(res,errors,"Error al actualizar encuesta",422)
+      return
     }
     const query = surveyService.getSurveys();
     const result = await promisePool.query(query);

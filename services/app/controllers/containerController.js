@@ -2,6 +2,7 @@ const ContainerProduct = require("../models/Container/ContainerProductModel");
 const { matchedData, validationResult } = require("express-validator");
 const { handleHttpError } = require("../utils/handleError");
 const { v4: uuidv4 } = require("uuid");
+const { handleErrorGroup } = require("../utils/handleErrorGroup");
 
 /**
  * @swagger
@@ -64,8 +65,8 @@ const createContainer = async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      res.status(422).json({ errors: errors.array() });
-      return;
+      handleErrorGroup(res,errors,"Error en auth",422)
+      return
     }
 
     const surveySchema = {

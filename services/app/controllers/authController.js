@@ -6,6 +6,7 @@ const { tokenSign } = require("../utils/handeJwt");
 const User = require("../models/Users/UserModel");
 const UserAdmin = require("../models/Users/UserAdminModel");
 const { v4: uuidv4 } = require("uuid");
+const { handleErrorGroup } = require("../utils/handleErrorGroup");
 
 /**
  * @swagger
@@ -92,8 +93,8 @@ const registerAuthUser = async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      res.status(422).json({ errors: errors.array() });
-      return;
+      handleErrorGroup(res,errors,"Error en registro de usuario",422)
+      return
     }
 
     req = matchedData(req);
@@ -225,8 +226,9 @@ const registerAuthUserAdmin = async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      res.status(422).json({ errors: errors.array() });
-      return;
+        console.log(errors)
+        handleErrorGroup(res,errors,"Error en auth",422)
+        return
     }
 
     req = matchedData(req);
@@ -340,8 +342,8 @@ const loginAuthUser = async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      res.status(422).json({ errors: errors.array() });
-      return;
+      handleErrorGroup(res,errors,"Error en login",422)
+      return
     }
 
     req = matchedData(req);
@@ -384,6 +386,7 @@ const loginAuthUser = async (req, res, next) => {
     });
   } catch (error) {
     handleHttpError(res, "Error al logearse el usuario");
+    return
   }
 };
 
