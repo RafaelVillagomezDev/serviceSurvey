@@ -6,7 +6,8 @@ const handleHttpError = (res, messague = "Algo sucedio", code = 403) => {
   res.status(code);
   res.send({ 
     status:code,
-    error: messague 
+    messague:{messague},
+    error: {msg:messague} 
   });
 };
 

@@ -112,7 +112,7 @@ const registerAuthUser = async (req, res, next) => {
     const existUser = await user.existUser(req);
 
     if (existUser[0].length > 0) {
-      handleHttpError(res, "El usuario ya existe", 401);
+      handleHttpError(res, "Erro al registrar usuario ", 401);
       return;
     }
 
@@ -131,7 +131,7 @@ const registerAuthUser = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error);
-    handleHttpError(res, "Error al registrar usuario");
+    handleHttpError(res, "Error en registro de usuario");
   }
 };
 /**
@@ -247,7 +247,7 @@ const registerAuthUserAdmin = async (req, res, next) => {
     const existUser = await user.existUser(req);
 
     if (existUser[0].length > 0) {
-      handleHttpError(res, "El usuario ya existe", 401);
+      handleHttpError(res, "Error al registrar usuario", 401);
       return;
     }
 
@@ -270,7 +270,7 @@ const registerAuthUserAdmin = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error);
-    handleHttpError(res, "Error al registrar usuario");
+    handleHttpError(res, "Error en registro de usuario");
   }
 };
 
@@ -355,7 +355,7 @@ const loginAuthUser = async (req, res, next) => {
     const existUser = await user.existUser();
 
     if (existUser.length == 0) {
-      handleHttpError(res, "El usuario no existe", 401);
+      handleHttpError(res, "Erro en inicio de sesion", 401);
       return;
     }
 
@@ -364,7 +364,7 @@ const loginAuthUser = async (req, res, next) => {
     const verifyCredentials = await compare(password, hashPassword);
 
     if (!verifyCredentials) {
-      handleHttpError(res, "la contraseña es incorrecta", 401);
+      handleHttpError(res, "La contraseña es incorrecta", 401);
       return;
     }
 
