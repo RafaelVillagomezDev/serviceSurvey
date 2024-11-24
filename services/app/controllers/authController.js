@@ -30,7 +30,7 @@ const { handleErrorGroup } = require("../utils/handleErrorGroup");
  *               - password
  *               - dni
  *               - birthday
- *               
+ *
  *             properties:
  *               password:
  *                 type: string
@@ -93,8 +93,8 @@ const registerAuthUser = async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      handleErrorGroup(res,errors,"Error en registro de usuario",422)
-      return
+      handleErrorGroup(res, errors, "Error en registro de usuario", 422);
+      return;
     }
 
     req = matchedData(req);
@@ -119,8 +119,7 @@ const registerAuthUser = async (req, res, next) => {
     const newUsers = await user.createUser(req);
 
     if (newUsers[0].affectedRows > 0) {
-
-      const {password,dni,birthday,...dataToken}=req;
+      const { password, dni, birthday, ...dataToken } = req;
 
       const token = await tokenSign(dataToken);
 
@@ -174,7 +173,7 @@ const registerAuthUser = async (req, res, next) => {
  *                 description: NIF (Número de Identificación Nacional fiscal).
  *               tipo_compania:
  *                 type: string
- *                 description: Tipo de compañia de empresa 
+ *                 description: Tipo de compañia de empresa
  *               birthday:
  *                 type: string
  *                 format: date
@@ -226,9 +225,9 @@ const registerAuthUserAdmin = async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        console.log(errors)
-        handleErrorGroup(res,errors,"Error en auth",422)
-        return
+      console.log(errors);
+      handleErrorGroup(res, errors, "Error en auth", 422);
+      return;
     }
 
     req = matchedData(req);
@@ -239,7 +238,7 @@ const registerAuthUserAdmin = async (req, res, next) => {
       id_user: await uuidv4(),
       id_admin: await uuidv4(),
     };
-    const dataBody = { ...req,...authObj };
+    const dataBody = { ...req, ...authObj };
     req = dataBody;
 
     const user = new User(req);
@@ -258,7 +257,15 @@ const registerAuthUserAdmin = async (req, res, next) => {
       const newAdmin = await admin.createUser(req);
 
       if (newAdmin[0].affectedRows > 0) {
-        const {password,dni,id_admin,fecha_nacimiento,apellido,nif,...dataToken}=req;
+        const {
+          password,
+          dni,
+          id_admin,
+          fecha_nacimiento,
+          apellido,
+          nif,
+          ...dataToken
+        } = req;
 
         const token = await tokenSign(dataToken);
 
@@ -337,13 +344,12 @@ const registerAuthUserAdmin = async (req, res, next) => {
  *               $ref: '#/components/schemas/ErrorResponse'
  */
 
-
 const loginAuthUser = async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      handleErrorGroup(res,errors,"Error en login",422)
-      return
+      handleErrorGroup(res, errors, "Error en login", 422);
+      return;
     }
 
     req = matchedData(req);
@@ -368,15 +374,11 @@ const loginAuthUser = async (req, res, next) => {
       return;
     }
 
-    
-
     const dataToken = {
       id_user: existUser[0][0].Id_usuario,
       name_user: existUser[0][0].Nombre_user,
       rol: existUser[0][0].Rol_Value,
-    }; 
-
-   
+    };
 
     const token = await tokenSign(dataToken);
 
@@ -386,7 +388,36 @@ const loginAuthUser = async (req, res, next) => {
     });
   } catch (error) {
     handleHttpError(res, "Error al logearse el usuario");
-    return
+    return;
+  }
+};
+
+const getUser = async (req, res, next) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      handleErrorGroup(res, errors, "Error al obtener usuario", 422);
+      return;
+    }
+
+    req = matchedData(req);
+
+    const usuario = new User(req);
+
+    const userExist = await usuario.getUserId();
+
+    if (userExist.length == 0) {
+      handleHttpError(res, "Error al obtener usuario", 401);
+      return;
+    }
+
+    res.send({
+      status: 200,
+      data: userExist[0],
+    });
+  } catch (error) {
+    handleHttpError(res, "Error al obtener usuario", 400);
+    return;
   }
 };
 
@@ -394,4 +425,5 @@ module.exports = {
   registerAuthUser,
   loginAuthUser,
   registerAuthUserAdmin,
+  getUser,
 };

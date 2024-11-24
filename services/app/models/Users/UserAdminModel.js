@@ -20,6 +20,12 @@ class UserAdmin extends User {
 
     return admin;
   }
+
+  async getUserIdAdmin(){
+    const queryExist = authService.searchUserIdAdmin();
+    const user = await promisePool.query(queryExist, [this.req.id_user]);
+    return user
+}
 }
 
 module.exports = UserAdmin;

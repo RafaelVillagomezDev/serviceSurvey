@@ -18,6 +18,8 @@ class User{
         return existUser
     }
 
+  
+
     async createUser(){
         const queryRegister = authService.createUser();
         const user = await promisePool.query(queryRegister, [
@@ -32,6 +34,12 @@ class User{
          ]);
 
          return user
+    }
+
+    async getUserId(){
+        const queryExist = authService.searchUserId();
+        const user = await promisePool.query(queryExist, [this.req.id_user]);
+        return user
     }
 
     

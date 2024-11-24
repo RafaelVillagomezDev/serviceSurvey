@@ -10,16 +10,7 @@ const { handleErrorGroup } = require("../utils/handleErrorGroup");
 
 const getSurveys = async (req, res, next) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      handleErrorGroup(res,errors,"Error al obtener encuesta",422)
-      return
-    }
-
-    req = matchedData(req);
-
     const survey = new Survey(req);
-
     const existSurvey = await survey.getSurveys();
 
     res.send({

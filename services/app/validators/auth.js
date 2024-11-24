@@ -1,4 +1,4 @@
- const {body}= require('express-validator');
+ const {body, param}= require('express-validator');
  const {testRegex,validateCIF, validateRol, validateRolAdmin, validateRolUser}=require("../utils/handleRegex")
 function validateAuth(method,req){
     console.log(req)
@@ -51,6 +51,12 @@ function validateAuth(method,req){
              body('password','no es una password fuerte').isStrongPassword().escape().trim(),
             ]   
          }
+         case 'getUser':{
+            return [ 
+               param('id_user','Id usuario debe ser un UUID').escape().trim().isUUID()
+              ]  
+         }
+
 
       }
 }
