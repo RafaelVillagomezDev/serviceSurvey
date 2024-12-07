@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const {authToken}=require("../../middlewares/Auth/authSession");
 const subproductController=require("../../controllers/subproductController");
-const { validateSubproduct } = require('../../validators/subproduct');
+const { validateSubproduct } = require('../../schemas/subproduct');
 
 
 

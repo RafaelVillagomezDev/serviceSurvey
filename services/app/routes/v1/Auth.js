@@ -1,12 +1,12 @@
 var express = require('express');
 var router = express.Router();
 const {authToken}=require("../../middlewares/Auth/authSession");
-const authController=require("../../controllers/authController")
-const validateAuth=require("../../validators/auth")
+const authController=require("../../controllers/authController");
+const { create, login, getUser } = require('../../schemas/auth');
 
-router.post('/register',validateAuth("create"),authController.registerAuthUser);
-router.post('/registerAdmin', validateAuth("createAdmin"),authController.registerAuthUserAdmin);
-router.post('/login', validateAuth("login"),authController.loginAuthUser);
-router.get('/:id_user',authToken,validateAuth("getUser"),authController.getUser);
+
+router.post('/register',create,(req,res)=>authController.registerAuthUser(req,res));
+router.post('/login', login,(req,res)=>authController.loginAuthUser(req,res));
+router.get('/:id_user',getUser,authToken,(req,res)=>authController.getUser(req,res));
 
 module.exports=router

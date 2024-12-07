@@ -5,12 +5,12 @@ var secretToken = process.env.JWT_SECRET;
   return: JsonWebToken
 */
 
-const tokenSign =async (authUser) => {
+const tokenSign =async ({id_user,name_user,rol}) => {
   const sign = jsonwebtoken.sign(
     {
-      id_user: authUser.id_user,
-      name_user: authUser.name_user,
-      rol: authUser.rol,
+      id_user: id_user,
+      name_user: name_user,
+      rol: rol,
     },
     secretToken,
     {

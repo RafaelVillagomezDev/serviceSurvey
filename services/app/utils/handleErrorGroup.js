@@ -20,7 +20,7 @@ const handleErrorGroup = (res, errors, messague = "Algo sucedió", code = 403) =
     });
   
     // Responder con el código y el objeto de errores
-    res.status(code).json({ status: code, message: messague, error: errorObject });
+    return res.status(code).json({ status: code, message: messague, error: errorObject });
   };
   
   

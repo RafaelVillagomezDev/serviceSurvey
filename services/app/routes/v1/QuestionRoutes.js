@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const questionController=require("../../controllers/questionController")
-const validateQuestion=require("../../validators/question")
+const validateQuestion=require("../../schemas/question")
 const {authToken}=require("../../middlewares/Auth/authSession");
 
 

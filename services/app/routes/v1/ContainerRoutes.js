@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const {authToken}=require("../../middlewares/Auth/authSession");
 const containerController=require("../../controllers/containerController");
-const { validateContainer } = require('../../validators/container');
+const { validateContainer } = require('../../schemas/container');
 
 
 

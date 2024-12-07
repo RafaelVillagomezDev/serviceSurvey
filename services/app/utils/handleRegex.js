@@ -1,71 +1,4 @@
-const { v4:uuidv4 } = require('uuid');
-const { validate :uuidValidate } =require('uuid');
-/*
- Funcion : recoge una regex y el un valor a testear
- return params: boolean
-*/
 
-const testRegex=(regex,value)=>{
-    let regexTest= new RegExp(regex);
-    if(regexTest.test(value)){
-        return true
-    }else {
-        return false
-    }
-}
-/*
- Funcion: recibe el email despues de haber pasado las correspondientes validaciones
- return: boolean
- extra: Esta funcion la usaremos para decidir el rol del usuario
-*/
-
-const validateRolUser=(rol)=>{
-    const roles = [ "user"];
-   return roles.find(r => r === rol?true:false) 
-}
-
-const validateRolAdmin=(rol)=>{
-    const roles = ["admin"];
-   return roles.find(r => r === rol?true:false); 
-}
-
-
-/*
- Funcion: recibe un parametro y verifica si es un UUID y esta en el formato correcto
- return :boolean
-*/
-
-const validateUUID=(param)=>{
-    return uuidValidate(param)?true:false
-
-}
-
-
-
-function validateCIF(cif) {
-    // Expresión regular para el formato del CIF: 1 letra, 8 dígitos, 1 carácter de control (letra o número)
-    const cifRegex = /^[A-HJ-NP-S]\d{8}[A-Z\d]?$/;
-
-    // Verificar el formato
-    if (!cifRegex.test(cif)) {
-        return false;
-    }
-
-    // Desglosar el CIF
-    const letra = cif[0];
-    const numeros = cif.slice(1, 9); // Los 8 dígitos del CIF
-    const control = cif[9] || ''; // El carácter de control (puede ser opcional en algunos casos)
-
-    // Calcular el dígito o letra de control
-    const calculoControl = calcularControlCIF(letra, numeros);
-
-    // Comparar el dígito/letra calculada con el carácter de control
-    if (control && control !== calculoControl) {
-        return false;
-    }
-
-    return true;
-}
 
 function calcularControlCIF(letra, numeros) {
     let sumaPares = 0;
@@ -102,4 +35,32 @@ function calcularControlCIF(letra, numeros) {
 
 
 
-module.exports={testRegex,validateRolAdmin,validateRolUser,validateUUID , validateCIF}
+function validateCIF(cif) {
+    // Expresión regular para el formato del CIF: 1 letra, 8 dígitos, 1 carácter de control (letra o número)
+    const cifRegex = /^[A-HJ-NP-S]\d{8}[A-Z\d]?$/;
+
+    // Verificar el formato
+    if (!cifRegex.test(cif)) {
+        return false;
+    }
+
+    // Desglosar el CIF
+    const letra = cif[0];
+    const numeros = cif.slice(1, 9); // Los 8 dígitos del CIF
+    const control = cif[9] || ''; // El carácter de control (puede ser opcional en algunos casos)
+
+    // Calcular el dígito o letra de control
+    const calculoControl = calcularControlCIF(letra, numeros);
+
+    // Comparar el dígito/letra calculada con el carácter de control
+    if (control && control !== calculoControl) {
+        return false;
+    }
+
+    return true;
+}
+
+
+
+
+module.exports={ validateCIF}

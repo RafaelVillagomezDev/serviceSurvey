@@ -1,6 +1,9 @@
 const createUser = () => {
-  const query =
-    "INSERT INTO USUARIO (Rol_value,Id_usuario,Email,Nombre_user,Apellido_user,Passwd,Fecha_nacimiento,Dni) VALUES (?,?,?,?,?,?,?,?);";
+  const query = `
+  INSERT IGNORE INTO USUARIO 
+    (Rol_value, Id_usuario, Email, Nombre_user, Apellido_user, Passwd, Fecha_nacimiento, Dni)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+`;
   return query;
 };
 
@@ -12,6 +15,11 @@ const createUserAdmin = () => {
 
 const existUser = () => {
   const query = "SELECT * FROM `usuario` WHERE `email` = ?;";
+  return query;
+};
+
+const existAdmin = () => {
+  const query = "SELECT * FROM `admin` WHERE `Id_usuario` = ?;";
   return query;
 };
 
@@ -51,6 +59,7 @@ WHERE
 module.exports = {
   createUser,
   existUser,
+  existAdmin,
   createUserAdmin,
   searchUserId,
   searchUserIdAdmin,

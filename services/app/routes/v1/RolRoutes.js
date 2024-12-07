@@ -3,7 +3,7 @@ var router = express.Router();
 const {authToken}=require("../../middlewares/Auth/authSession");
 const {verifyRolRoot}=require("../../middlewares/Auth/verifyRol");
 const routeController=require("../../controllers/rolController");
-const validateRol = require('../../validators/rol');
+const validateRol = require('../../schemas/rol');
 
 
 

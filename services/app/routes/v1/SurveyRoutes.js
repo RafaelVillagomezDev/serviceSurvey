@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const {authToken}=require("../../middlewares/Auth/authSession");
 const surveyController=require("../../controllers/surveyController");
-const validateSurvey=require("../../validators/survey");
+const validateSurvey=require("../../schemas/survey");
 
 
 router.get('/',authToken,surveyController.getSurveys);
